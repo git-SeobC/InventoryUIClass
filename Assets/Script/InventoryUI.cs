@@ -1,24 +1,26 @@
 using Gpm.Ui;
+using System.IO;
 using UnityEngine;
 
 public class InventoryUI : MonoBehaviour
 {
-    public int Count = 1000;
-
     [SerializeField] private InfiniteScroll _infiniteScroll;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        for (int i = 0; i < Count; i++)
-        {
-            _infiniteScroll.InsertData(new InfiniteScrollData());
-        }
-    }
+        string path = Path.Combine(Application.persistentDataPath, "UserInventoryData.json");
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        IUserInventoryDataRepository repo = new UserInventoryDataRepository(path);
+
+        InventoryService inventoryService = new InventoryService(repo, itemRepo);
+
+        foreach (var dataViewModel in inventoryService.FindAll())
+        {
+            Sprite gradeBackgroundSprite = Resources.Load<Sprite>(dataViewModel.GradeSpritePath);
+
+            Sprite itemIconSprite = Resources.Load<Sprite>(dataViewModel.ItemIconPath);
+
+        }
     }
 }

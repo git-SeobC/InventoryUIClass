@@ -1,6 +1,7 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 public enum ItemType
@@ -33,6 +34,19 @@ public sealed class Item
     private ItemGrade _grade;
     private int _atk;
     private int _def;
+
+    public int Id => _id;
+    public string GradePath => $"{_grade}";
+    public string IconPath
+    {
+        get
+        {
+            StringBuilder sb = new StringBuilder(_id);
+            sb[1] = '1';
+            return sb.ToString();
+        }
+    }
+
 
     public Item(int id, string name, int atk, int def)
     {
@@ -98,7 +112,7 @@ public class ItemRepository
 
     public ItemRepository()
     {
-        LoadJson();
+        _items = LoadJson();
     }
 
     // 외부에서 변경이 이루어 지면 안됨 -> readonly를 통해 변경 막기
@@ -122,7 +136,7 @@ public class ItemRepository
         public ItemModel[] data;
     }
 
-    void LoadJson()
+    List<Item> LoadJson()
     {
         // Json 파일을 읽어와야 합니다.
         // ㄴ Json 파일은 어디에? -> Unity 외부에있음
@@ -133,10 +147,12 @@ public class ItemRepository
         ItemModelList itemModelList = JsonUtility.FromJson<ItemModelList>(json);
 
         // _items 초기화
-        _items = new List<Item>();
+        var items = new List<Item>();
         foreach (var itemModel in itemModelList.data)
         {
-            _items.Add(new Item(itemModel.item_id, itemModel.item_name, itemModel.attack_power, itemModel.defense));
+            items.Add(new Item(itemModel.item_id, itemModel.item_name, itemModel.attack_power, itemModel.defense));
         }
+
+        return items;
     }
 }
