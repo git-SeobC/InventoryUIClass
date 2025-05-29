@@ -7,6 +7,10 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private InventoryServiceLocatorSO _serviceLocator;
+
+    [SerializeField] private InventoryUI _inventoryUI;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -27,7 +31,12 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            _serviceLocator.Service.AcquipreRandomItem();
+
+            _inventoryUI.Refresh();
+        }
     }
 
     

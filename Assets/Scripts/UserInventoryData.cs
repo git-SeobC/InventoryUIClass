@@ -29,10 +29,14 @@ public class UserInventoryData
     {
         return $"Inven Data : {SerialNumber}, {ItemId}";
     }
-}
 
-public interface IUserInventoryDataNotification
-{
-    long SerialNumber { get; set; }
-    
+    public bool Equals(UserInventoryData other)
+    {
+        if (other == null)
+        {
+            return false;
+        }
+
+        return SerialNumber == other.SerialNumber;
+    }
 }
