@@ -1,18 +1,23 @@
-// Repository : 객체의 퍼시스턴시
+﻿// Repository : 객체의 퍼시스턴시
 // ㄴ 영속성 메모리에 객체를 저장하거나
 // ㄴ 영속성 메모리로부터 객체를 복원한다.
 
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
+
+
 
 [Serializable]
 class UserInventoryDataModel
 {
     public long serial_number;
     public int item_id;
+    public int quantity;
 
     public static UserInventoryDataModel From(UserInventoryData data)
     {
@@ -25,7 +30,7 @@ class UserInventoryDataModel
 
     public static UserInventoryData ToDomain(UserInventoryDataModel model)
     {
-        return new UserInventoryData(model.serial_number, model.item_id);
+        return new UserInventoryData(model.serial_number, model.item_id, model.quantity);
     }
 }
 
